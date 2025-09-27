@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
 //ricorda di mettere prima tutto e poi il main
 
@@ -15,6 +15,10 @@ struct Contatto contatti[100];
 //confronta le 2 stringhe cog1 e cog2
 int confrontoCognomi(char cog1[30], char cog2[30])
 {
+    /* con questo codice mi ritorna 1 anche se cog1 = "p" e cog2 = "pippo",
+     * non so perché ma ritorna 1 se l'input ha almeno 1 iniziale del cognome
+     * funziona anche con input = "pippo2" e cog2 = "pippo", ma non dovrebbe
+     *ho provato a non usare strcmp ma non funziona bene
     int i = 0;
     while (cog1[i] != '\0' && cog2[i] != '\0') {
         if (cog1[i] != cog2[i]) {
@@ -23,22 +27,35 @@ int confrontoCognomi(char cog1[30], char cog2[30])
         i++;
     }
     return 1;
+    */
+    if (strcmp(cog1, cog2) == 0)
+    {
+        return 1;
+    }
+
+    return 0;
+
+    //return 0;
 }
 
 //ricrea la lista togliendo le informazioni in posizione n
-struct Contatto rifareLista(struct Contatto listaContatti[100], int n, int l)
+void rifareLista(struct Contatto listaContatti[100], int n, int l)
 {
-    for (int i = n; i < l+1; i ++)
+    for (int i = n; i < l-1; i ++)
     {
         listaContatti[i] = listaContatti[i+1];
     }
-
-    return listaContatti[100];
 }
 
 //aggiunge un contatto alla lista
 int aggiungiContatto(int i)
 {
+    if (i >= 100)
+    {
+        printf("Errore! La rubrica è piena e non si possono aggiungere altri contatti");
+        return i;
+    }
+
     printf("Inserisci il nome del nuovo contatto:\n");
     scanf("%29s", contatti[i].nome);
     printf("Inserisci il cognome del nuovo contatto:\n");
@@ -89,13 +106,17 @@ int eliminaContatto(int i)
     int vuoto = 0;
     printf("Inserire il cognome del contatto da eliminare:\n");
     scanf("%29s", cercaCognome);
-    for (int j = 0; j < i; j++)
+    for (int j = 0; j < i; )
     {
         if (confrontoCognomi(cercaCognome, contatti[j].cognome) == 1)
         {
-            contatti[100] = rifareLista(contatti, j, i);
+            rifareLista(contatti, j, i);
             vuoto ++;
             i --;
+        }
+        else
+        {
+            j ++;
         }
     }
     if (vuoto == 0)
@@ -142,6 +163,8 @@ int main(void) {
                 controllo ++;
                 break;
             default:
+                printf("Errore!");
+                controllo ++;
                 break;
         }
     }
