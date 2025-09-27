@@ -14,6 +14,7 @@ int main(void) {
 
     struct Contatto contatti[100];
     int scelta, i = 0, controllo = 0;
+    char cercaCognome[30];
 
     while (controllo == 0)
     {
@@ -44,19 +45,31 @@ int main(void) {
                 }
                 break;
             case 3:
+                printf("Inserire il cognome del contatto da cercare:\n");
+                scanf("%s", &cercaCognome);
+                printf("Ecco tutti i contatti con il cognome %s:\n", cercaCognome);
+                for (int j = 0; j < i; j++)
+                {
+                    if (cercaCognome == contatti[j].cognome)
+                    {
+                        printf("Nome:\t\t%s\nCognome:\t%s\nTelefono:\t%s\n\n", contatti[j].nome, contatti[j].cognome, contatti[j].telefono);
+                    }
+                    else
+                    {
+                        printf("Trovato nulla");
+                    }
+                }
                 break;
             case 4:
                 break;
             case 5:
-                controllo = 1;
+                controllo ++;
                 break;
             default:
                 break;
         }
 
     }
-
-
 
     return 0;
 }
